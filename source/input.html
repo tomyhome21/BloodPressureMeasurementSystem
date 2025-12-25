@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<base target="_top">
+<style>
+  body { font-family: sans-serif; padding: 10px; }
+  textarea { width: 100%; height: 150px; resize: vertical; margin-bottom: 10px; box-sizing: border-box; }
+  .button-container { text-align: right; }
+</style>
+</head>
+<body>
+  <p><strong>Keepのデータを以下に貼り付けてください:</strong></p>
+  <textarea id="dataInput" placeholder="例: 2025/12/01,朝,135,85,65..."></textarea>
+  <div class="button-container">
+    <button onclick="google.script.host.close()">キャンセル</button>
+    <button onclick="processData()">処理を開始</button>
+  </div>
+
+  <script>
+    function processData() {
+      const data = document.getElementById('dataInput').value;
+      
+      // データが空でないかチェック
+      if (data.trim().length === 0) {
+        alert('データを貼り付けてください。');
+        return;
+      }
+
+      // GASのmainProcessor関数を呼び出し、データを渡す
+      google.script.run
+        .withSuccessHandler(google.script.host.close) // 成功したらダイアログを閉じる
+        .withFailureHandler(function(error) {
+          alert('エラーが発生しました: ' + error.message);
+        })
+        .mainProcessor(data);
+    }
+  </script>
+</body>
+</html>
